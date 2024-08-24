@@ -1,0 +1,38 @@
+{
+  "name": "trip_planner",
+  "version": "1.0.0",
+  "description": "Test project for Bizaway backend engineer position",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/HeydarliAtabay/bizaway_test.git"
+  },
+  "author": "Heydarli Atabay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HeydarliAtabay/bizaway_test/issues"
+  },
+  "homepage": "https://github.com/HeydarliAtabay/bizaway_test#readme",
+  "dependencies": {
+    "axios": "^1.7.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
