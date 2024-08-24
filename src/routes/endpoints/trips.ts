@@ -8,7 +8,9 @@ const router = Router();
  * @openapi
  * /api/v1/trips:
  *   get:
- *     summary: Trips endpoint
+ *     tags:
+ *     - Main task
+ *     summary: GET trips from third party API
  *     description: Get a list of trips with sorting options.
  *     parameters:
  *       - name: origin
