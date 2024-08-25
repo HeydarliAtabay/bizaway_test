@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
-import { Trip } from '../types/trips';
+import { ITripBase } from '../models/Trip';
 
 const API_URL = process.env.API_URL;
 const API_KEY = process.env.API_KEY;
@@ -16,7 +16,7 @@ export const getDefaultTrips = async (req: Request, res: Response) => {
   const { origin, destination, sort_by } = req.query as { origin: string; destination: string; sort_by: 'fastest' | 'cheapest' };
 
   try {
-    const response = await axios.get<Trip[]>(API_URL, {
+    const response = await axios.get<ITripBase[]>(API_URL, {
       headers: {
         'x-api-key': API_KEY,
       },
@@ -25,7 +25,6 @@ export const getDefaultTrips = async (req: Request, res: Response) => {
         destination,
       },
     });
-
     let trips = response.data;
 
     if (sort_by === 'fastest') {
