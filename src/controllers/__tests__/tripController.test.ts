@@ -1,9 +1,14 @@
 import * as dotenv from 'dotenv';
+import express from 'express';
 dotenv.config();
 import { Request, Response } from 'express';
 import axios from 'axios';
-import { getDefaultTrips } from '../tripsController';
+import { getDefaultTrips, getFilteredTrips } from '../tripsController';
 import { ITripBase } from '../../models/Trip';
+import request from 'supertest'; // Import Supertest
+
+
+const app = express();
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -124,5 +129,108 @@ describe('getDefaultTrips', () => {
       },
     });
   });
+});
 
+
+app.get('/api/v1/trips/filtered', getFilteredTrips);
+
+describe('GET /api/v1/trips/filtered', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  // Use Case: The user does not provide the origin in the request.
+  // Expected Behavior: The controller should return a 500 status code with a validation error message.
+  it('should return 500 if origin is missing', async () => {
+    const response = await request(app).get('/api/v1/trips/filtered').query({
+      destination: 'MIA',
+    });
+
+    expect(response.status).toBe(500);
+    expect(response.body.message).toBe('Failed to fetch trips from external API');
+  });
+
+  // Use Case: The user does not provide the destination in the request.
+  // Expected Behavior: The controller should return a 500 status code with a validation error message.
+  it('should return 500 if destination is missing', async () => {
+    const response = await request(app).get('/api/v1/trips/filtered').query({
+      origin: 'MIA',
+    });
+
+    expect(response.status).toBe(500);
+    expect(response.body.message).toBe('Failed to fetch trips from external API');
+  });
+
+  // Use Case: The user provides an invalid price range.
+  // Expected Behavior: The controller should return a 400 status code with a validation error message.
+  it('should return 400 if price_range is invalid', async () => {
+
+    mockedAxios.get.mockResolvedValueOnce({ data: [] });
+  
+    const response = await request(app).get('/api/v1/trips/filtered').query({
+      origin: 'MIA',
+      destination: 'ATL',
+      price_range: [-10, 10],
+    });
+  
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Invalid price range.');
+  });
+  // Use Case: The user provides a valid price range but no other filters.
+  // Expected Behavior: The controller should return a 200 status code and the correct filtered trips.
+  it('should return 200 and filter trips based on price range', async () => {
+    const trips = [
+      { origin: 'MIA', destination: 'ATL', cost: 150, duration: 120, type: 'flight', id: '1', display_name: 'Trip 1' },
+      { origin: 'MIA', destination: 'ATL', cost: 250, duration: 150, type: 'flight', id: '2', display_name: 'Trip 2' },
+    ];
+
+    mockedAxios.get.mockResolvedValueOnce({ data: trips });
+
+    const response = await request(app).get('/api/v1/trips/filtered').query({
+      origin: 'MIA',
+      destination: 'ATL',
+      price_range: [100, 200],
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual([
+      { origin: 'MIA', destination: 'ATL', cost: 150, duration: 120, type: 'flight', id: '1', display_name: 'Trip 1' },
+    ]);
+  });
+
+  // Use Case: The user provides a transport type filter.
+  // Expected Behavior: The controller should return a 200 status code and the correct filtered trips.
+  it('should return 200 and filter trips based on transport type', async () => {
+    const trips = [
+      { origin: 'MIA', destination: 'ATL', cost: 150, duration: 120, type: 'bus', id: '1', display_name: 'Trip 1' },
+      { origin: 'MIA', destination: 'ATL', cost: 200, duration: 150, type: 'flight', id: '2', display_name: 'Trip 2' },
+    ];
+
+    mockedAxios.get.mockResolvedValueOnce({ data: trips });
+
+    const response = await request(app).get('/api/v1/trips/filtered').query({
+      origin: 'MIA',
+      destination: 'ATL',
+      transport_type: 'flight',
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual([
+      { origin: 'MIA', destination: 'ATL', cost: 200, duration: 150, type: 'flight', id: '2', display_name: 'Trip 2' },
+    ]);
+  });
+
+  // Use Case: The external API request fails.
+  // Expected Behavior: The controller should return a 500 status code and an error message.
+  it('should return 500 if the external API request fails', async () => {
+    mockedAxios.get.mockRejectedValueOnce(new Error('API Error'));
+
+    const response = await request(app).get('/api/v1/trips/filtered').query({
+      origin: 'MIA',
+      destination: 'ATL',
+    });
+
+    expect(response.status).toBe(500);
+    expect(response.body.message).toBe('Failed to fetch trips from external API');
+  });
 });

@@ -5,13 +5,11 @@ import { ITripBase } from '../models/Trip';
 const API_URL = process.env.API_URL;
 const API_KEY = process.env.API_KEY;
 
-if (!API_KEY) {
-  throw new Error('API_KEY is not defined in environment variables');
+if (!API_KEY || !API_URL) {
+  throw new Error('API_KEY or API_URL are not defined in environment variables');
 }
-if (!API_URL) {
-    throw new Error('API_URL is not defined in environment variables');
-  }
 
+// Controller function to get sorted trips
 export const getDefaultTrips = async (req: Request, res: Response) => {
   const { origin, destination, sort_by } = req.query as { origin: string; destination: string; sort_by: 'fastest' | 'cheapest' };
 
@@ -75,14 +73,14 @@ export const getFilteredTrips = async (req: Request, res: Response) => {
       },
     });
 
-
     let trips = response.data;
     let filtered_trips = trips;
 
-    
       if (price_range && price_range.length === 2) {
-        const [minPrice, maxPrice] = price_range;
+
+        const [minPrice, maxPrice] = price_range.map((el)=>Number(el));
         if (isValidPriceRange([minPrice, maxPrice])) {
+
           filtered_trips = filtered_trips.filter(trip => trip.cost >= minPrice && trip.cost <= maxPrice);
         } else {
           return res.status(400).json({
