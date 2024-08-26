@@ -129,7 +129,7 @@ To run the application using Docker Compose:
 3. Build and start the containers:
 
     ```bash
-    docker-compose up --build
+    docker-compose up -d --build
     ```
 
     The application will be running at `http://localhost:${PORT}`.
