@@ -1,3 +1,4 @@
+// Trip getting endpoints and their documentation
 import { Router } from 'express';
 import { getDefaultTrips, getFilteredTrips } from '../../controllers/tripsController';
 import { validateGetTrips } from '../../middlewares/validateGetTrips';

@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 import axios from 'axios';
 import { getDefaultTrips, getFilteredTrips } from '../tripsController';
 import { ITripBase } from '../../models/Trip';
-import request from 'supertest'; // Import Supertest
+import request from 'supertest';
 
 
 const app = express();

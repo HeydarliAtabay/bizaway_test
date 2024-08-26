@@ -1,6 +1,6 @@
 import express from 'express';
-import request from 'supertest'; // Import Supertest
-import { validateGetTrips } from '../../middlewares/validateGetTrips'; // Your middleware
+import request from 'supertest'; 
+import { validateGetTrips } from '../../middlewares/validateGetTrips';
 
 const app = express();
 

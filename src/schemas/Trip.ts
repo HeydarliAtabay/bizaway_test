@@ -1,3 +1,4 @@
+// Trip schema
 import mongoose, { Document, Schema } from 'mongoose';
 import { ITrip } from '../models/Trip';
 

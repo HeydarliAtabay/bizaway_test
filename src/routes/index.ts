@@ -1,3 +1,4 @@
+// Routes of application
 import { Router } from 'express';
 import tripsRoutes from './endpoints/trips';
 import tripsManagerRoutes from './endpoints/tripManager'

@@ -1,3 +1,4 @@
+// Main component of Application
 import * as dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
@@ -6,8 +7,6 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerOptions from './config/swagger';
 import connectDB from './config/database';
-
-
 
 const app = express();
 app.use(express.json());

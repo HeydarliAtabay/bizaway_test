@@ -1,3 +1,4 @@
+// Controllers for Getting, Sorting and Filtering Trips
 import { Request, Response } from 'express';
 import axios from 'axios';
 import { ITripBase } from '../models/Trip';
@@ -14,6 +15,7 @@ export const getDefaultTrips = async (req: Request, res: Response) => {
   const { origin, destination, sort_by } = req.query as { origin: string; destination: string; sort_by: 'fastest' | 'cheapest' };
 
   try {
+    //Getting trips from third party API
     const response = await axios.get<ITripBase[]>(API_URL, {
       headers: {
         'x-api-key': API_KEY,
@@ -23,8 +25,10 @@ export const getDefaultTrips = async (req: Request, res: Response) => {
         destination,
       },
     });
+
     let trips = response.data;
 
+    // Sorting based on the given sort_by param
     if (sort_by === 'fastest') {
       trips = trips.sort((a, b) => a.duration - b.duration);
     } else if (sort_by === 'cheapest') {
@@ -63,6 +67,7 @@ export const getFilteredTrips = async (req: Request, res: Response) => {
   };
 
   try {
+    //Getting trips from third party API
     const response = await axios.get<ITripBase[]>(API_URL, {
       headers: {
         'x-api-key': API_KEY,
@@ -76,8 +81,8 @@ export const getFilteredTrips = async (req: Request, res: Response) => {
     let trips = response.data;
     let filtered_trips = trips;
 
+    // Filtering by price_range if it is given correctly
       if (price_range && price_range.length === 2) {
-
         const [minPrice, maxPrice] = price_range.map((el)=>Number(el));
         if (isValidPriceRange([minPrice, maxPrice])) {
 
@@ -88,7 +93,7 @@ export const getFilteredTrips = async (req: Request, res: Response) => {
           });
         }
       }
-
+      // Filtering by transport type if it is exists
       if (transport_type) {
         filtered_trips = filtered_trips.filter(trip => trip.type === transport_type);
       }

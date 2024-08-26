@@ -1,3 +1,4 @@
+//Simple services for Trip
 import { ITrip } from '../models/Trip';
 import Trip from '../schemas/Trip';
 

@@ -1,3 +1,4 @@
+// Controllers for Managing Trips
 import { Request, Response } from 'express';
 import { createTrip, getTrips, deleteTrip } from '../services/tripServices';
 

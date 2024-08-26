@@ -1,3 +1,4 @@
+// Trip manager endpoints and their documentation
 import { Router } from 'express';
 import { createTripHandler, getTripsHandler, deleteTripHandler } from '../../controllers/tripManagerController';
 

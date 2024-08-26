@@ -1,3 +1,4 @@
+// Base model and Mongoose model of Trip
 import { Document } from 'mongoose';
 
 export interface ITripBase {
