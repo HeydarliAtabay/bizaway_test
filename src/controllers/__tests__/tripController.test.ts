@@ -202,7 +202,7 @@ describe('GET /api/v1/trips/filtered', () => {
   // Expected Behavior: The controller should return a 200 status code and the correct filtered trips.
   it('should return 200 and filter trips based on transport type', async () => {
     const trips = [
-      { origin: 'MIA', destination: 'ATL', cost: 150, duration: 120, type: 'bus', id: '1', display_name: 'Trip 1' },
+      { origin: 'MIA', destination: 'ATL', cost: 150, duration: 120, type: 'car', id: '1', display_name: 'Trip 1' },
       { origin: 'MIA', destination: 'ATL', cost: 200, duration: 150, type: 'flight', id: '2', display_name: 'Trip 2' },
     ];
 

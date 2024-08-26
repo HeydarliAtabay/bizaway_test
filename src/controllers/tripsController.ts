@@ -63,7 +63,7 @@ export const getFilteredTrips = async (req: Request, res: Response) => {
     origin:string,
     destination:string,
     price_range?:[number,number],
-    transport_type?:'train'|'bus'|'flight'
+    transport_type?:'train'|'car'|'flight'
   };
 
   try {

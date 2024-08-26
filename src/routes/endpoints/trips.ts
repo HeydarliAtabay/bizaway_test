@@ -113,7 +113,7 @@ router.get('/trips', validateGetTrips, getDefaultTrips);
  *         description: Optional filter by transport type.
  *         schema:
  *           type: string
- *           enum: [train, bus, flight]
+ *           enum: [train, car, flight]
  *           description: Filter by transport type.
  *     responses:
  *       200:
