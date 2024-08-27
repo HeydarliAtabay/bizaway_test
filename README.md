@@ -16,8 +16,6 @@
   - [Accessing Swagger](#accessing-swagger)
   - [API Endpoints](#api-endpoints)
 - [Running Tests](#running-tests)
-  - [Test Coverage](#test-coverage)
-- [Environment Variables](#environment-variables)
 
 ## Introduction
 
